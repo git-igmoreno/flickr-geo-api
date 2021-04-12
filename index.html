@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="API_KEY.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script>
+        const executeQuery = async () => {
+            let url = new URL("https://www.flickr.com/services/rest/");
+            url.searchParams.append('method', 'flickr.photos.search');
+            url.searchParams.append('api_key', API_KEY);
+            url.searchParams.append('tags', document.getElementById('tag').value);
+            url.searchParams.append('lat', document.getElementById('lat').value);
+            url.searchParams.append('lon', document.getElementById('lon').value);
+            url.searchParams.append('format', 'json');
+            url.searchParams.append('nojsoncallback', 1);
+
+            const response = await fetch(url.href);
+            const body = await response.json();
+            console.log(body);
+            getRandomImageFrom(body);
+        }
+        const getRandomImageFrom = (body) => {
+            let randPosition = Math.floor(Math.random() * body.photos.photo.length);
+
+            let server = body.photos.photo[randPosition].server;
+            let secret = body.photos.photo[randPosition].secret;
+            let id = body.photos.photo[randPosition].id;
+            let farm = body.photos.photo[randPosition].farm;
+            console.log(body.photos.photo[randPosition]);
+            let src = "https://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + ".jpg";
+            let image = document.getElementById("image").src = src;
+        }
+
+        function handleSubmit() {
+            executeQuery();
+            return false;
+        }
+    </script>
+</head>
+
+<body>
+    <form onsubmit="return handleSubmit()">
+        <label for="lat">Latitud: </label><input id="lat" type="text" value="41.3879" />
+        <label for="lon">Longitud: </label><input id="lon" type="text" value="2.16992" />
+        <label for="tag">Etiqueta: </label><input id="tag" type="text" value="paisaje" />
+        <input type="submit" value="Buscar" />
+    </form>
+    <h2> Random image encontrada: </h2>
+    <img id="image" src="" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
