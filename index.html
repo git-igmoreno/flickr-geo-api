@@ -17,35 +17,92 @@
             url.searchParams.append('lon', document.getElementById('lon').value);
             url.searchParams.append('format', 'json');
             url.searchParams.append('nojsoncallback', 1);
-
             const response = await fetch(url.href);
             const body = await response.json();
-            
             getRandomImageFrom(body);
-            //console.log(body);
         }
         const getRandomImageFrom = (body) => {
             let randPosition = Math.floor(Math.random() * body.photos.photo.length);
-
+            console.log(body);
             let server = body.photos.photo[randPosition].server;
             let secret = body.photos.photo[randPosition].secret;
             let id = body.photos.photo[randPosition].id;
             let farm = body.photos.photo[randPosition].farm;
             let src = "https://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + ".jpg";
             let image = document.getElementById("image").src = src;
-
-            //console.log(body.photos.photo[randPosition]);
         }
+        
+        const fromXYtoLatLon = (mouseEvent,map)=>{
+            let mapViewport = {
+                width:map.getBoundingClientRect().width,
+                height: map.getBoundingClientRect().height
+            }
+            let coordXY = {
+                x: mouseEvent.x - map.getBoundingClientRect().left,
+                y: mouseEvent.y - map.getBoundingClientRect().top
+                
+            }
+            let coordLatLon = {
+                lat:-1*((coordXY.y * 180) / (mapViewport.height)-90),
+                lon:(coordXY.x * 360) /(mapViewport.width)-180
+            }
+      
+            console.log("LAT: "  + coordLatLon.lat +" LON: " + coordLatLon.lon);
+            return coordLatLon;
+        }
+        
+        const executeMapQuery = async (e) => {
+            console.log(e);
+            let mouseEvent = {
+                x: e.x,
+                y:e.y
+            }
+            let map = document.getElementById("map");
+            let coordLatLon = fromXYtoLatLon(mouseEvent, map);
+
+            
+           
+
+
+            let url = new URL("https://www.flickr.com/services/rest/");
+            url.searchParams.append('method', 'flickr.photos.search');
+            url.searchParams.append('api_key', API_KEY);
+            url.searchParams.append('lat', coordLatLon.lat.toFixed(2));
+            url.searchParams.append('lon', coordLatLon.lon.toFixed(2));
+            url.searchParams.append('format', 'json');
+            url.searchParams.append('nojsoncallback', 1);
+            console.log(url.href);
+            const response = await fetch(url.href);
+            const body = await response.json();
+            getRandomImageFrom(body);
+        }
+
+        
 
         function handleSubmit() {
             executeQuery();
             return false;
         }
+
+        function handleMapClick(e) {
+            executeMapQuery(e);
+        }
     </script>
+    <style>
+        #map {
+
+            cursor: crosshair;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container m-5">
+    <img id="map" class="col-12 mx-0 px-0"
+    src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Earthmap1000x500.jpg"
+    onClick="handleMapClick(event)" />
+    <div class="container my-5">
+        
+
         <h1>FLICKR GEO API</h1>
         <form onsubmit="return handleSubmit()">
             <div class="form-group">
@@ -63,7 +120,7 @@
             <input type="submit" class="btn btn-large btn-info" value="Buscar" />
         </form>
         <h2> Random image: </h2>
-        <img id="image" src="" class="w-100"/>
+        <img id="image" src="" class="w-100" />
 
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
