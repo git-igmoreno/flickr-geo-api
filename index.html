@@ -7,6 +7,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script>
+
         const executeQuery = async () => {
             let url = new URL("https://www.flickr.com/services/rest/");
             url.searchParams.append('method', 'flickr.photos.search');
@@ -19,8 +20,9 @@
 
             const response = await fetch(url.href);
             const body = await response.json();
-            console.log(body);
+            
             getRandomImageFrom(body);
+            //console.log(body);
         }
         const getRandomImageFrom = (body) => {
             let randPosition = Math.floor(Math.random() * body.photos.photo.length);
@@ -29,9 +31,10 @@
             let secret = body.photos.photo[randPosition].secret;
             let id = body.photos.photo[randPosition].id;
             let farm = body.photos.photo[randPosition].farm;
-            console.log(body.photos.photo[randPosition]);
             let src = "https://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + ".jpg";
             let image = document.getElementById("image").src = src;
+
+            //console.log(body.photos.photo[randPosition]);
         }
 
         function handleSubmit() {
@@ -42,14 +45,27 @@
 </head>
 
 <body>
-    <form onsubmit="return handleSubmit()">
-        <label for="lat">Latitud: </label><input id="lat" type="text" value="41.3879" />
-        <label for="lon">Longitud: </label><input id="lon" type="text" value="2.16992" />
-        <label for="tag">Etiqueta: </label><input id="tag" type="text" value="paisaje" />
-        <input type="submit" value="Buscar" />
-    </form>
-    <h2> Random image encontrada: </h2>
-    <img id="image" src="" />
+    <div class="container m-5">
+        <h1>FLICKR GEO API</h1>
+        <form onsubmit="return handleSubmit()">
+            <div class="form-group">
+                <label for="lat">Latitud: </label>
+                <input id="lat" type="text" class="form-control" value="41.3879" />
+            </div>
+            <div class="form-group">
+                <label for="lon">Longitud: </label>
+                <input id="lon" class="form-control" type="text" value="2.16992" />
+            </div>
+            <div class="form-group">
+                <label for="tag">Etiqueta: </label>
+                <input id="tag" class="form-control" type="text" value="paisaje" />
+            </div>
+            <input type="submit" class="btn btn-large btn-info" value="Buscar" />
+        </form>
+        <h2> Random image: </h2>
+        <img id="image" src="" class="w-100"/>
+
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
