@@ -7,6 +7,8 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script>
+        const SCR_NOT_FOUND= 'https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg';
+    
         let state = {
             mouseX: 0,
             mouseY: 0,
@@ -64,12 +66,18 @@
             state.lat = coordLatLon.lat;
             state.lon = coordLatLon.lon;
             state.photo = body.photos.photo;
+            let src, title, coords;
 
-            let randPosition = getRandPosition(state.photo.length);
-            let src = getImageSrcFrom(randPosition);
-            let title = getTitleStringFrom(randPosition);
-            let coords = getCoordStringFrom(randPosition);
-
+            if(state.photo.length!=0){
+                let randPosition = getRandPosition(state.photo.length);
+                src = getImageSrcFrom(randPosition);
+                title = getTitleStringFrom(randPosition);
+                coords = getCoordStringFrom(randPosition);
+            }else{
+                src = SCR_NOT_FOUND;
+                title = "";
+                coords = "";
+            }
             showImageCard(src, title, coords);
 
         }
@@ -188,7 +196,7 @@
     </nav>
 
     <img id="map" class="col-12 mx-0 px-0"
-        src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Earthmap1000x500.jpg"
+        src="https://www.mapsof.net/uploads/static-maps/equirectangular_projection.jpg"
         onClick="handleMapClick(event)" />
 
     <img id="image" src="" class="w-100" />
