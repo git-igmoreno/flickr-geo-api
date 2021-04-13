@@ -1,7 +1,6 @@
 # flickr-geo-api
 
-This project uses [Flickr App Garden API](https://www.flickr.com/services/api/) for getting pictures given a geolocation point (lat,lon). It captures X,Y coordinates when a user clicks on the map and traslate them to lat,lon coordinates. 
-
+This project uses [Flickr App Garden API](https://www.flickr.com/services/api/) for getting pictures given a geolocation point (lat,lon). It captures X,Y coordinates when a user clicks on the map and traslate them to lat,lon coordinates. Then it send a request to Flickr App Garden Api and gets some random photo shot at this location.
 If you want to test this project make sure to include an API_KEY.js file with a constant declaration of your personal API key:
 
 For example:
