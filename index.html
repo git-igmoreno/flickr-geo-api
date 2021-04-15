@@ -7,8 +7,8 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script>
-        const SCR_NOT_FOUND= 'https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg';
-    
+        const SCR_NOT_FOUND = 'https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg';
+
         let state = {
             mouseX: 0,
             mouseY: 0,
@@ -68,12 +68,12 @@
             state.photo = body.photos.photo;
             let src, title, coords;
 
-            if(state.photo.length!=0){
+            if (state.photo.length != 0) {
                 let randPosition = getRandPosition(state.photo.length);
                 src = getImageSrcFrom(randPosition);
                 title = getTitleStringFrom(randPosition);
                 coords = getCoordStringFrom(randPosition);
-            }else{
+            } else {
                 src = SCR_NOT_FOUND;
                 title = "";
                 coords = "";
@@ -145,15 +145,6 @@
             box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        #imageCard #moreButton {
-            position: absolute;
-            left: 50%;
-            transform: translate(-55%, 0);
-            bottom: 25px;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
         #imageCard #cardTitle,
         nav.navbar {
             margin-top: 10px;
@@ -162,7 +153,6 @@
             text-shadow: 3px 3px 5px #000;
             text-overflow: ellipsis;
             width: 100%;
-
         }
 
         #imageCard #cardCoords {
@@ -170,7 +160,6 @@
             margin-left: 10px;
             color: white;
             text-shadow: 3px 3px 5px #000;
-
         }
 
         nav.navbar {
@@ -204,7 +193,6 @@
         <div id="closeButton"></div>
         <div id="cardTitle" class="h5">Title</div>
         <div id="cardCoords">Coords</div>
-        <button id="moreButton" class="btn btn-sm btn-success">More </button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
